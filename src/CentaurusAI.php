@@ -9,6 +9,7 @@ use Google\Cloud\DocumentAI\V1\ProcessRequest;
 use Google\Cloud\DocumentAI\V1\RawDocument;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use Mecomedia\CentaurusAI\Constants\AIModels;
 use OpenAI\Laravel\Facades\OpenAI;
 
 class CentaurusAI
@@ -64,7 +65,7 @@ class CentaurusAI
     /**
      * Send data to Anthropic API
      */
-    public function sendAnthropic($messages, $maxToken = 4096, $model = 'claude-3-5-sonnet-20240620'): null|string
+    public function sendAnthropic($messages, $maxToken = 4096, $model = AIModels::CLAUDE_37): null|string
     {
         try {
             $yourApiKey = config('anthropic.api_key');
@@ -93,7 +94,7 @@ class CentaurusAI
     /**
      * Send data to OpenAI API
      */
-    public function sendOpenAi($messages, $model): null|string
+    public function sendOpenAi($messages, $model = AIModels::OPENAI_MODEL_5O_NANO): null|string
     {
         try {
             $request = [
@@ -119,7 +120,7 @@ class CentaurusAI
     /**
      * Send data to OpenAI API
      */
-    public function sendGemini($messages, $model = ModelType::GEMINI_FLASH): null|string
+    public function sendGemini($messages, $model = AIModels::GEMINI_25_LITE): null|string
     {
         try {
             $chatMessages = "";
@@ -145,7 +146,7 @@ class CentaurusAI
     /**
      * Send data to OpenAI API
      */
-    public function sendMistral($messages, $model = "mistral-large-latest", $temperature = 0.5): null|string
+    public function sendMistral($messages, $model = AIModels::MISTRAL_LARGE, $temperature = 0.5): null|string
     {
         try {
             $request = [
@@ -187,7 +188,7 @@ class CentaurusAI
     /**
      * Send data to OpenAI API
      */
-    public function sendIonos($messages, $model = "meta-llama/Llama-3.3-70B-Instruct", $temperature = 0.3): null|string
+    public function sendIonos($messages, $model = AIModels::IONOS_LAMA_33, $temperature = 0.3): null|string
     {
         try {
             $request = [
@@ -253,9 +254,9 @@ class CentaurusAI
     }
 
     /**
-     * Send data to OpenAI API
+     * Get embedding from OpenAI API
      */
-    public function getEmbeddedFromOpenAi($text, $model = "text-embedding-3-large", $format = "float"): null|array
+    public function getEmbeddedFromOpenAi($text, $model = AIModels::OPENAI_EMBEDDING_3_LARGE, $format = "float"): null|array
     {
         $request = [
             "input" => $text,

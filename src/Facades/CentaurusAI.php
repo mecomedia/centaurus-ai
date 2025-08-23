@@ -4,16 +4,17 @@ namespace Mecomedia\CentaurusAI\Facades;
 
 use Gemini\Enums\ModelType;
 use Illuminate\Support\Facades\Facade;
+use Mecomedia\CentaurusAI\Constants\AIModels;
 
 /**
  * @method static \Mecomedia\CentaurusAI\CentaurusAI client()
  * @method static string|null processOcrDocument(string $filename)
- * @method static string|null sendAnthropic($messages, $maxToken = 4096, $model = 'claude-3-5-sonnet-20240620')
- * @method static string|null sendOpenAi($messages, $model)
- * @method static string|null sendGemini($messages, $model = ModelType::GEMINI_FLASH)
- * @method static string|null sendMistral($messages, $model = "mistral-large-latest", $temperature = 0.5)
- * @method static string|null sendIonos($messages, $model = "meta-llama/Llama-3.3-70B-Instruct", $temperature = 0.3)
- * @method static array|null getEmbeddedFromOpenAi($text, $model = "text-embedding-3-large", $format = "float")
+ * @method static string|null sendAnthropic($messages, $maxToken = 4096, $model = AIModels::CLAUDE_37)
+ * @method static string|null sendOpenAi($messages, $model = AIModels::OPENAI_MODEL_5O_NANO)
+ * @method static string|null sendGemini($messages, $model = AIModels::GEMINI_25_LITE)
+ * @method static string|null sendMistral($messages, $model = AIModels::MISTRAL_LARGE, $temperature = 0.5)
+ * @method static string|null sendIonos($messages, $model = AIModels::IONOS_LAMA_33, $temperature = 0.3)
+ * @method static array|null getEmbeddedFromOpenAi($text, $model = AIModels::OPENAI_EMBEDDING_3_LARGE, $format = "float")
  *
  * @see \Mecomedia\CentaurusAI\CentaurusAI
  */
