@@ -7,8 +7,8 @@ use Mecomedia\CentaurusAI\Constants\AIModels;
 
 /**
  * @method static string|null processOcrDocument(string $filename)
- * @method static string|null sendAnthropic($messages, $maxToken = 4096, $model = AIModels::CLAUDE_37)
- * @method static string|null sendOpenAi($messages, $model = AIModels::OPENAI_MODEL_5O_NANO)
+ * @method static string|null sendAnthropic($messages, $maxToken = 4096, $model = AIModels::CLAUDE_SONNET_4)
+ * @method static string|null sendOpenAi($messages, $model = AIModels::OPENAI_MODEL_41_NANO)
  * @method static string|null sendGemini($messages, $model = AIModels::GEMINI_25_LITE)
  * @method static string|null sendMistral($messages, $model = AIModels::MISTRAL_LARGE, $temperature = 0.5)
  * @method static string|null sendIonos($messages, $model = AIModels::IONOS_LAMA_33, $temperature = 0.3)

@@ -2,7 +2,6 @@
 
 namespace Mecomedia\CentaurusAI;
 
-use Gemini\Enums\ModelType;
 use Gemini\Laravel\Facades\Gemini;
 use Google\Cloud\DocumentAI\V1\Client\DocumentProcessorServiceClient;
 use Google\Cloud\DocumentAI\V1\ProcessRequest;
@@ -39,7 +38,7 @@ class CentaurusAI
             $raw->setContent($image);
             $raw->setMimeType('application/pdf');
 
-            # Fully-qualified Processor Name
+            # Fully qualified Processor Name
             $processor = $client->processorName(config('google-api.document_ai_project_id'),
                 config('google-api.document_ai_location'),
                 config('google-api.document_ai_processor_id'));
@@ -65,7 +64,7 @@ class CentaurusAI
     /**
      * Send data to Anthropic API
      */
-    public function sendAnthropic($messages, $maxToken = 4096, $model = AIModels::CLAUDE_37): null|string
+    public function sendAnthropic($messages, $maxToken = 4096, $model = AIModels::CLAUDE_SONNET_4): null|string
     {
         try {
             $yourApiKey = config('anthropic.api_key');
@@ -94,7 +93,7 @@ class CentaurusAI
     /**
      * Send data to OpenAI API
      */
-    public function sendOpenAi($messages, $model = AIModels::OPENAI_MODEL_5O_NANO): null|string
+    public function sendOpenAi($messages, $model = AIModels::OPENAI_MODEL_41_NANO): null|string
     {
         try {
             $request = [
