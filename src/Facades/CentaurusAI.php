@@ -2,12 +2,10 @@
 
 namespace Mecomedia\CentaurusAI\Facades;
 
-use Gemini\Enums\ModelType;
 use Illuminate\Support\Facades\Facade;
 use Mecomedia\CentaurusAI\Constants\AIModels;
 
 /**
- * @method static \Mecomedia\CentaurusAI\CentaurusAI client()
  * @method static string|null processOcrDocument(string $filename)
  * @method static string|null sendAnthropic($messages, $maxToken = 4096, $model = AIModels::CLAUDE_37)
  * @method static string|null sendOpenAi($messages, $model = AIModels::OPENAI_MODEL_5O_NANO)
