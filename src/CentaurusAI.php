@@ -30,13 +30,19 @@ class CentaurusAI
                 'apiEndpoint' => config('google-api.document_ai_endpoint')
             ]);
 
+            // Ermittle den Pfad zur Datei
+            $filePath = Storage::disk('local')->path('files/' . $filename);
+
+            // Bestimme den MIME-Typ dynamisch anhand des existierenden Dateipfads
+            $mimeType = mime_content_type($filePath);
+
             // Lade die PDF-Datei
             $image = Storage::disk('local')->get('files/' . $filename);
 
             // Erstelle Raw Document
             $raw = new RawDocument();
             $raw->setContent($image);
-            $raw->setMimeType('application/pdf');
+            $raw->setMimeType($mimeType);
 
             # Fully qualified Processor Name
             $processor = $client->processorName(config('google-api.document_ai_project_id'),
