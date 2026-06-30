@@ -11,6 +11,7 @@ use Mecomedia\CentaurusAI\Constants\AIModels;
  * @method static string|null sendOpenAi($messages, $model = AIModels::OPENAI_MODEL_41_NANO)
  * @method static string|null sendGemini($messages, $model = AIModels::GEMINI_25_LITE)
  * @method static string|null sendMistral($messages, $model = AIModels::MISTRAL_LARGE, $temperature = 0.5)
+ * @method static string|null sendMistralOcr($file, $model = AIModels::MISTRAL_OCR, $output = 'html')
  * @method static string|null sendIonos($messages, $model = AIModels::IONOS_LAMA_33, $temperature = 0.3)
  * @method static array|null getEmbeddedFromOpenAi($text, $model = AIModels::OPENAI_EMBEDDING_3_LARGE, $format = "float")
  *

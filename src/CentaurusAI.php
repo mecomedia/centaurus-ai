@@ -206,11 +206,13 @@ class CentaurusAI
             $mimeType = mime_content_type($filePath) ?: 'application/pdf';
             $base64File = base64_encode(file_get_contents($filePath));
 
+            $type = $mimeType === 'application/pdf' ? 'document_url' : 'image_url';
+
             $request = [
                 'model' => $model,
                 'document' => [
-                    'type' => 'document_url',
-                    'document_url' => 'data:' . $mimeType . ';base64,' . $base64File,
+                    'type' => $type,
+                    $type => 'data:' . $mimeType . ';base64,' . $base64File,
                 ],
                 'table_format' => $output,
                 'include_image_base64' => true,

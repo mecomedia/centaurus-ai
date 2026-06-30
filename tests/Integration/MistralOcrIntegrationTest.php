@@ -47,16 +47,23 @@ class MistralOcrIntegrationTest extends TestCase
             $this->markTestSkipped('MISTRAL_API_KEY ist nicht gesetzt. Integration Test wird übersprungen.');
         }
 
-        $fixturePath = __DIR__ . '/../Fixtures/mistral-ocr-test.pdf';
+        $fixtureFiles = [
+            'mistral-ocr-test.pdf',
+            'mistral-ocr-test.png',
+        ];
 
-        if (!file_exists($fixturePath)) {
-            $this->markTestSkipped('Fixture fehlt: tests/Fixtures/mistral-ocr-test.pdf');
+        foreach ($fixtureFiles as $fixtureFile) {
+            $fixturePath = __DIR__ . '/../Fixtures/' . $fixtureFile;
+
+            if (!file_exists($fixturePath)) {
+                $this->markTestSkipped('Fixture fehlt: tests/Fixtures/' . $fixtureFile);
+            }
+
+            Storage::disk('local')->put(
+                'files/' . $fixtureFile,
+                file_get_contents($fixturePath)
+            );
         }
-
-        Storage::disk('local')->put(
-            'files/mistral-ocr-test.pdf',
-            file_get_contents($fixturePath)
-        );
     }
 
     #[Group('integration')]
@@ -82,7 +89,7 @@ class MistralOcrIntegrationTest extends TestCase
 
     #[Group('integration')]
     #[Group('mistral')]
-    public function test_send_mistral_ocr_detects_expected_text_from_fixture(): void
+    public function test_send_mistral_ocr_detects_expected_text_from_pdf_fixture(): void
     {
         $result = (new CentaurusAI())->sendMistralOcr('mistral-ocr-test.pdf');
 
@@ -91,7 +98,22 @@ class MistralOcrIntegrationTest extends TestCase
 
         $recognizedText = json_encode($result, JSON_UNESCAPED_UNICODE);
 
-        print_r($recognizedText);
+        $this->assertIsString($recognizedText);
+        $this->assertStringContainsStringIgnoringCase('Centaurus', $recognizedText);
+        $this->assertStringContainsStringIgnoringCase('Mistral', $recognizedText);
+        $this->assertStringContainsStringIgnoringCase('TEST-123', $recognizedText);
+    }
+
+    #[Group('integration')]
+    #[Group('mistral')]
+    public function test_send_mistral_ocr_detects_expected_text_from_png_fixture(): void
+    {
+        $result = (new CentaurusAI())->sendMistralOcr('mistral-ocr-test.png');
+
+        $this->assertIsArray($result);
+        $this->assertArrayHasKey('pages', $result);
+
+        $recognizedText = json_encode($result, JSON_UNESCAPED_UNICODE);
 
         $this->assertIsString($recognizedText);
         $this->assertStringContainsStringIgnoringCase('Centaurus', $recognizedText);
