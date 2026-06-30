@@ -3,3 +3,6 @@ composer.lock
 .idea
 /.phpunit.cache/
 .php-cs-fixer.cache
+.env
+.env.testing
+.phpunit.result.cache

@@ -125,7 +125,7 @@ class CentaurusAI
     /**
      * Send data to OpenAI API
      */
-    public function sendGemini($messages, $model = AIModels::GEMINI_25_LITE): null|string
+    public function sendGemini($messages, $model = AIModels::GEMINI_35_FLASH): null|string
     {
         try {
             $chatMessages = "";
@@ -193,7 +193,70 @@ class CentaurusAI
     /**
      * Send data to OpenAI API
      */
-    public function sendIonos($messages, $model = AIModels::IONOS_LAMA_33, $temperature = 0.3): null|string
+    public function sendMistralOcr($file, $model = AIModels::MISTRAL_OCR, $output = 'html'): null|array
+    {
+        try {
+            $filePath = Storage::disk('local')->path('files/' . $file);
+
+            if (!file_exists($filePath)) {
+                Log::error('Evaluate mistral OCR data: file not found ' . $filePath);
+                return null;
+            }
+
+            $mimeType = mime_content_type($filePath) ?: 'application/pdf';
+            $base64File = base64_encode(file_get_contents($filePath));
+
+            $request = [
+                'model' => $model,
+                'document' => [
+                    'type' => 'document_url',
+                    'document_url' => 'data:' . $mimeType . ';base64,' . $base64File,
+                ],
+                'table_format' => $output,
+                'include_image_base64' => true,
+            ];
+
+            $curl = curl_init();
+            $options = [
+                CURLOPT_URL => config('mistral.api_url') . '/ocr',
+                CURLOPT_POST => true,
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_HTTPHEADER => [
+                    'Content-type: application/json',
+                    'Accept: application/json',
+                    'Authorization: Bearer ' . config('mistral.api_key'),
+                ],
+                CURLOPT_POSTFIELDS => json_encode($request),
+            ];
+            curl_setopt_array($curl, $options);
+            $curl_response = curl_exec($curl);
+
+            if ($curl_response === false) {
+                Log::error('Evaluate mistral OCR data: ' . curl_error($curl));
+                curl_close($curl);
+                return null;
+            }
+
+            curl_close($curl);
+
+            $result = json_decode($curl_response, true);
+
+            if (!is_array($result) || empty($result)) {
+                Log::error('Evaluate mistral OCR data: ' . print_r($curl_response, true));
+                return null;
+            }
+
+            return $result;
+        } catch (\Exception $exception) {
+            Log::error('Evaluate mistral OCR data: ' . $exception->getMessage());
+            return null;
+        }
+    }
+
+    /**
+     * Send data to OpenAI API
+     */
+    public function sendIonos($messages, $model = AIModels::IONOS_OPENAI_OSS_120b, $temperature = 0.3): null|string
     {
         try {
             $request = [

@@ -1,6 +1,6 @@
 {
   "name": "mecomedia/centaurus-ai",
-  "version": "0.1.7",
+  "version": "0.1.9",
   "description": "Centaurus-AI – Laravel package by mecomedia.",
   "type": "library",
   "license": "MIT",
@@ -39,6 +39,11 @@
     "psr-4": {
       "Mecomedia\\CentaurusAITests\\": "tests/"
     }
+  },
+  "scripts": {
+    "test": "vendor/bin/phpunit",
+    "test:integration": "vendor/bin/phpunit --group integration",
+    "test:mistral": "vendor/bin/phpunit --group mistral"
   },
   "extra": {
     "laravel": {
